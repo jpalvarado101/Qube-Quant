@@ -1,0 +1,14 @@
+<div class="container">
+  <h1>qube-trader</h1>
+  <div class="card">
+    <label>Symbol <input [(ngModel)]="symbol" /></label>
+    <label>Start <input [(ngModel)]="start" /></label>
+    <label>End <input [(ngModel)]="end" /></label>
+    <button (click)="sync()">Sync Prices</button>
+    <button (click)="train()">Train PPO</button>
+  </div>
+  <div class="card">
+    <h3>Status</h3>
+    <div *ngFor="let l of log">{{ l }}</div>
+  </div>
+</div>
