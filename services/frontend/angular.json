@@ -13,7 +13,8 @@
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [],
+            "tsConfig": "tsconfig.app.json",
+            "polyfills": ["zone.js"],
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
             "scripts": []
