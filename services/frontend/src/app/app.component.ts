@@ -1,35 +1,30 @@
-import { Component } from "@angular/core";
-import { ApiService } from "./api.service";
+import { Component } from '@angular/core';
+import { ApiService } from './api.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   standalone: true,
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  imports: [CommonModule, FormsModule],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   constructor(private api: ApiService) {}
-  symbol = "AAPL";
-  start = "2018-01-01";
-  end = "2024-12-31";
-  runId = "";
-  log: string[] = [];
-  async sync() {
-    this.log.push("Syncing prices...");
-    const resp = await this.api.syncPrices(this.symbol, this.start, this.end);
-    this.log.push(`Inserted ${resp.inserted} rows`);
-  }
-  async train() {
-    this.log.push("Starting training...");
-    const resp = await this.api.train({
-      symbols: [this.symbol],
-      start: this.start,
-      end: this.end,
-      algo: "PPO",
-      alpha_sent: 0.5,
-      window: 64,
-    });
-    this.runId = resp.run_id;
-    this.log.push(`Run queued: ${this.runId}`);
+  symbol = 'AAPL';
+  alpha = 0.5;
+  result: any = null;
+  busy = false; err = '';
+
+  async analyze() {
+    this.err = ''; this.busy = true; this.result = null;
+    try {
+      this.result = await this.api.analyze(this.symbol, this.alpha);
+    } catch (e: any) {
+      this.err = String(e);
+    } finally {
+      this.busy = false;
+    }
   }
 }

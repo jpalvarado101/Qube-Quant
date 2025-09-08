@@ -43,7 +43,8 @@ async def train(body: TrainIn):
         a, _ = model.predict(obs, deterministic=True)
         actions.append(int(a))
         obs, r, done, trunc, info = env.step(int(a))
-    if done or trunc: break
+        if done or trunc: 
+            break
     import datetime as dt
     ts = aligned['ts'] if 'ts' in aligned.columns else aligned.index
     signals = pd.DataFrame({"ts": ts[1:len(actions)+1], "action": actions,    "price": aligned['c'].values[1:len(actions)+1]})
@@ -51,8 +52,7 @@ async def train(body: TrainIn):
     m = metrics_from_equity(eq)
     # Save to API tables
     from sqlalchemy import text
-    q_run = text("UPDATE runs SET status='finished', finished_at=now(),
-    metrics_json=:m WHERE id=:rid")
+    q_run = text("UPDATE runs SET status='finished', finished_at=now(),    metrics_json=:m WHERE id=:rid")
     db.execute(q_run, {"m": m, "rid": body.run_id}); db.commit()
     for _, r in signals.iterrows():
         db.execute(text("""
@@ -68,6 +68,17 @@ async def train(body: TrainIn):
     except Exception:
         pass
     return {"ok": True, "metrics": m}
+
+class AnalyzeIn(BaseModel):
+    symbol: str
+    alpha_sent: float = 0.5
+    
+    
+@app.post("/analyze")
+async def analyze(body: AnalyzeIn):
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
