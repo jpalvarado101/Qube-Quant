@@ -19,3 +19,5 @@ Dockerized full‑stack RL trading skeleton with FastAPI, Angular, Postgres, Red
 
 - Sentiment uses FinBERT locally (CPU ok). You can later switch to provider APIs.
 - RL env is simple and intended as a baseline you can extend.
+
+## License
