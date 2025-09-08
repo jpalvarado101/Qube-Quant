@@ -68,17 +68,6 @@ async def train(body: TrainIn):
     except Exception:
         pass
     return {"ok": True, "metrics": m}
-
-class AnalyzeIn(BaseModel):
-    symbol: str
-    alpha_sent: float = 0.5
-    
-    
-@app.post("/analyze")
-async def analyze(body: AnalyzeIn):
-
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
