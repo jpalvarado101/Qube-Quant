@@ -1,14 +1,11 @@
-# backend/app/models.py
 from sqlalchemy import Column, Integer, String, Float, Date, UniqueConstraint
 from .database import Base
-
 
 class Ticker(Base):
     __tablename__ = "tickers"
     id = Column(Integer, primary_key=True)
     symbol = Column(String, unique=True, index=True)
-    category = Column(String, index=True) # e.g., FAANG, MICRO_CAP, MEME, INDEX
-
+    category = Column(String, index=True)  # e.g., FAANG, MICRO_CAP, MEME, INDEX
 
 class Candle(Base):
     __tablename__ = "candles"

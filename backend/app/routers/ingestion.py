@@ -1,21 +1,16 @@
-# backend/app/routers/ingestion.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-import pandas as pd
 import yfinance as yf
 from ..database import get_db, Base, engine
-from .. import models, crud
 from ..schemas import IngestRequest
-
+from .. import crud
 
 router = APIRouter(prefix="/ingest", tags=["ingest"])
-
 
 @router.post("/init")
 def init_db():
     Base.metadata.create_all(bind=engine)
     return {"status": "ok"}
-
 
 @router.post("/yahoo")
 def ingest_from_yahoo(req: IngestRequest, db: Session = Depends(get_db)):

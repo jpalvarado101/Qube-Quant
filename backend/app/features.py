@@ -1,14 +1,8 @@
-# backend/app/features.py
 import pandas as pd
 import numpy as np
 from ta.momentum import RSIIndicator
 
-
-THRESH = 0.002 # 0.2% threshold for BUY/SELL
-
-
-# Label: next-day return sign with threshold (buy if > +thr, sell if < -thr, else hold)
-
+THRESH = 0.002  # 0.2% threshold
 
 def make_labels(df: pd.DataFrame, threshold: float = THRESH) -> pd.Series:
     ret1 = df['Close'].pct_change().shift(-1)
@@ -17,10 +11,6 @@ def make_labels(df: pd.DataFrame, threshold: float = THRESH) -> pd.Series:
     y[ret1 > threshold] = 1
     y[ret1 < -threshold] = -1
     return y.dropna()
-
-
-# Features: simple tech indicators (expand later)
-
 
 def make_features(df: pd.DataFrame) -> pd.DataFrame:
     feats = pd.DataFrame(index=df.index)

@@ -1,4 +1,3 @@
-# backend/app/routers/predict.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -6,9 +5,7 @@ from .. import crud
 from ..schemas import PredictRequest, PredictResponse
 from ..ml import predict_symbol
 
-
 router = APIRouter(prefix="/predict", tags=["predict"])
-
 
 @router.post("")
 def predict(req: PredictRequest, db: Session = Depends(get_db)) -> PredictResponse:
