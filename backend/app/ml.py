@@ -14,7 +14,10 @@ def model_path(symbol: str) -> str:
 
 def train_symbol(symbol: str, df: pd.DataFrame) -> dict:
     y = make_labels(df)
-    X = make_features(df).loc[y.index]
+    X_all = make_features(df)
+    X = X_all.reindex(y.index).dropna()
+    y = y.loc[X.index]
+
     if len(X) < 100:
         return {"symbol": symbol, "status": "not_enough_data", "n": len(X)}
 
@@ -31,6 +34,7 @@ def train_symbol(symbol: str, df: pd.DataFrame) -> dict:
     joblib.dump(pipe, model_path(symbol))
 
     return {"symbol": symbol, "status": "ok", "n": len(X), "report": report}
+
 
 def predict_symbol(symbol: str, df: pd.DataFrame):
     path = model_path(symbol)

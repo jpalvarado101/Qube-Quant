@@ -13,14 +13,20 @@ def upsert_tickers(db: Session, tickers: list[tuple[str, str]]):
 def insert_candles(db: Session, df: pd.DataFrame, symbol: str):
     rows = []
     for idx, row in df.iterrows():
+        def safe_float(val):
+            # handle Series or scalar
+            if hasattr(val, 'item'):
+                val = val.item()
+            return 0.0 if pd.isna(val) else float(val)
+
         rows.append(models.Candle(
             symbol=symbol,
             date=idx.date(),
-            open=float(row['Open']),
-            high=float(row['High']),
-            low=float(row['Low']),
-            close=float(row['Close']),
-            volume=float(row['Volume']) if not pd.isna(row['Volume']) else 0.0,
+            open=safe_float(row['Open']),
+            high=safe_float(row['High']),
+            low=safe_float(row['Low']),
+            close=safe_float(row['Close']),
+            volume=safe_float(row['Volume']),
         ))
     if rows:
         db.bulk_save_objects(rows, return_defaults=False)
@@ -32,7 +38,7 @@ def load_ohlcv(db: Session, symbol: str) -> pd.DataFrame:
     if not rows:
         return pd.DataFrame()
     df = pd.DataFrame([{
-        'Date': r.date,
+        'Date': pd.Timestamp(r.date),  # convert to Timestamp
         'Open': r.open,
         'High': r.high,
         'Low': r.low,
