@@ -9,3 +9,9 @@ stable-baselines3==2.3.2
 gymnasium==0.29.1
 scikit-learn==1.5.1
 python-dateutil==2.9.0.post0
+
+# FastAPI server
+fastapi==0.116.1
+uvicorn[standard]==0.30.6
+pydantic==2.11.7
+yfinance==0.2.65
