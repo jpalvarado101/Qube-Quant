@@ -1,17 +1,26 @@
-# Build stage
-FROM node:20 AS build
+# Stage 1: Build Angular app
+FROM node:20-alpine AS build
+
 WORKDIR /app
-# Copy manifests first for better Docker layer caching
+
+# Copy package files and install dependencies
 COPY package.json package-lock.json* ./
-# If a lockfile exists, use ci for reproducibility; otherwise fall back to install
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
-# Now copy the rest of the sources
-COPY angular.json tsconfig.json tsconfig.app.json ./
-COPY src ./src
-# Build the app
-RUN npm run build
-# Serve stage
-FROM nginx:1.27-alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN npm ci
+
+# Copy all source files
+COPY . .
+
+# Build Angular production bundle
+RUN npm run build -- --output-path=dist/frontend
+
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
+
+# Copy built Angular files from previous stage
 COPY --from=build /app/dist/frontend /usr/share/nginx/html
+
+# Expose Nginx port
 EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

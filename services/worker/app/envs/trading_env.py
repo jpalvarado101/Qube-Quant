@@ -32,7 +32,7 @@ class SimpleTradingEnv(gym.Env):
         # map action: 0 hold, 1 long, 2 short
         target = {0:self.pos,1:1,2:-1}[action]
         if target != self.pos:
-        reward -= self.cost
+            reward -= self.cost
         self.pos = target
         reward += self.pos * ((new_price/prev_price)-1.0)
         return self._obs(), float(reward), done, False, {}

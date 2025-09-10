@@ -1,4 +1,12 @@
 version: "3.9"
+
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  db-data:
+
 services:
   db:
     image: postgres:16
@@ -6,33 +14,57 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports: ["5432:5432"]
+    ports:
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - appnet
+
   redis:
     image: redis:7
-    ports: ["6379:6379"]
-
-  api:
-    build: ./services/api
-    env_file: .env
-    depends_on: [db, redis]
-    ports: ["8000:8000"]
+    ports:
+      - "6379:6379"
+    networks:
+      - appnet
 
   worker:
     build: ./services/worker
     env_file: .env
-    depends_on: [db, redis]
+    expose:
+      - "8001"             # internal only
+    networks:
+      appnet:
+        aliases:
+          - worker
+
+  api:
+    build: ./services/api
+    env_file: .env
+    environment:
+      WORKER_URL: http://worker:8001
+    depends_on:
+      - worker
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    networks:
+      - appnet
 
   scheduler:
     build: ./services/scheduler
     env_file: .env
-    depends_on: [api]
+    depends_on:
+      - api
+    networks:
+      - appnet
 
   frontend:
     build: ./services/frontend
-    depends_on: [api]
-    ports: ["4200:80"]
-
-volumes:
-  db-data:
+    depends_on:
+      - api
+    ports:
+      - "4200:80"
+    networks:
+      - appnet
