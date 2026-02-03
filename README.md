@@ -19,7 +19,7 @@ This project provides tools for:
 - Docker support for easy development and deployment
 
 ---
-
+```
 ## Repository Structure
 ├── backend/ // API server (Python/Flask, FastAPI, or similar)
 ├── frontend/ // Web app (React/TS)
@@ -29,7 +29,7 @@ This project provides tools for:
 ├── .env.example // Environment variables template
 ├── docker-compose.yml// Service definitions
 └── README.md
-
+```
 
 ---
 
