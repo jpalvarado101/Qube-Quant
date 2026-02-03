@@ -54,7 +54,7 @@ cp .env.example .env
 3. Ensure your dataset (e.g., CSV price history) is accessible to the training pipeline.
 
 
-Development Setup
+## Development Setup
 Using Docker
 
 Build and start services:
