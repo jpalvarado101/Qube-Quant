@@ -5,7 +5,9 @@ from .. import crud
 from ..schemas import PredictRequest, PredictResponse
 from ..ml import predict_symbol
 
-router = APIRouter(prefix="/predict", tags=["predict"])
+# router = APIRouter(prefix="/predict", tags=["predict"])
+router = APIRouter(tags=["predict"])
+
 
 @router.post("")
 def predict(req: PredictRequest, db: Session = Depends(get_db)) -> PredictResponse:

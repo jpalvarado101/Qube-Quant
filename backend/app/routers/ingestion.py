@@ -5,7 +5,9 @@ from ..database import get_db, Base, engine
 from ..schemas import IngestRequest
 from .. import crud
 
-router = APIRouter(prefix="/ingest", tags=["ingest"])
+# router = APIRouter(prefix="/ingest", tags=["ingest"])
+router = APIRouter(tags=["ingest"])
+
 
 @router.post("/init")
 def init_db():

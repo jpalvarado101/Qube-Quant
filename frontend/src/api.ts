@@ -25,7 +25,7 @@ export async function train(symbols?: string[]) {
   const res = await fetch(`${API_BASE}/train`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(symbols || null)
+    body: JSON.stringify({ symbols: symbols ?? null })
   })
   if (!res.ok) throw new Error(await res.text())
   return res.json()

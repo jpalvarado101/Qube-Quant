@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from . import models
 
 def upsert_tickers(db: Session, tickers: list[tuple[str, str]]):
@@ -14,23 +15,27 @@ def insert_candles(db: Session, df: pd.DataFrame, symbol: str):
     rows = []
     for idx, row in df.iterrows():
         def safe_float(val):
-            # handle Series or scalar
             if hasattr(val, 'item'):
                 val = val.item()
             return 0.0 if pd.isna(val) else float(val)
 
-        rows.append(models.Candle(
-            symbol=symbol,
-            date=idx.date(),
-            open=safe_float(row['Open']),
-            high=safe_float(row['High']),
-            low=safe_float(row['Low']),
-            close=safe_float(row['Close']),
-            volume=safe_float(row['Volume']),
-        ))
-    if rows:
-        db.bulk_save_objects(rows, return_defaults=False)
-        db.commit()
+        rows.append({
+            "symbol": symbol,
+            "date": idx.date(),
+            "open": safe_float(row["Open"]),
+            "high": safe_float(row["High"]),
+            "low": safe_float(row["Low"]),
+            "close": safe_float(row["Close"]),
+            "volume": safe_float(row["Volume"]),
+        })
+
+    if not rows:
+        return
+
+    stmt = pg_insert(models.Candle).values(rows)
+    stmt = stmt.on_conflict_do_nothing(index_elements=["symbol", "date"])
+    db.execute(stmt)
+    db.commit()
 
 def load_ohlcv(db: Session, symbol: str) -> pd.DataFrame:
     q = select(models.Candle).where(models.Candle.symbol == symbol).order_by(models.Candle.date)

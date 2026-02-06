@@ -26,7 +26,7 @@ export default function App() {
     setBusy(true)
     try {
       const r = await predict(ticker.trim().toUpperCase())
-      setResult(`${r.symbol}: ${r.signal}${r.probability ? ` (p≈${r.probability.toFixed(2)})` : ''}`)
+      setResult(`${r.symbol}: ${r.signal}${r.probability ? ` (~${r.probability.toFixed(2)})` : ''}`)
     } catch (e:any) { setResult(e.message) } finally { setBusy(false) }
   }
 

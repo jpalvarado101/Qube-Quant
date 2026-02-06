@@ -21,14 +21,14 @@ This project provides tools for:
 ---
 ```
 ## Repository Structure
-├── backend/ // API server (Python/Flask, FastAPI, or similar)
-├── frontend/ // Web app (React/TS)
-├── trainer/ // Training scripts and model pipelines
-├── volumes/models/ // Persisted trained models
-├── data/ // Market data CSVs
-├── .env.example // Environment variables template
-├── docker-compose.yml// Service definitions
-└── README.md
+- backend/ // API server
+- frontend/ // Web app (React/TS)
+- trainer/  // Training scripts and model pipelines
+- volumes/models/ // Persisted trained models
+- data/ // Market data CSVs
+- .env.example // Environment variables template
+- docker-compose.yml // Service definitions
+- README.md
 ```
 
 ---
