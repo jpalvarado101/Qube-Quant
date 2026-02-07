@@ -7,9 +7,9 @@ Qube-Quant is a dashboard for ingesting market data, training per-ticker models,
 
 ## Demo Video
 
-YouTube: https://youtu.be/TVGM4UomvNU
+YouTube: https://youtu.be/OQJ2rK7IdUc
 
-[![Demo Video](https://img.youtube.com/vi/TVGM4UomvNU/0.jpg)](https://youtu.be/TVGM4UomvNU)
+[![Demo Video](https://img.youtube.com/vi/OQJ2rK7IdUc/0.jpg)](https://youtu.be/OQJ2rK7IdUc)
 
 ---
 
