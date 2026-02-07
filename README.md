@@ -1,7 +1,7 @@
 # Qube-Quant
 
-**AI-Driven Market Forecasting Framework**  
-Qube-Quant is a modular system for ingesting market data, training per-ticker models, and serving buy/hold/sell signals through a REST API and a responsive web UI.
+**AI-Driven Market Forecasting Dashboard**  
+Qube-Quant is a dashboard for ingesting market data, training per-ticker models, and serving buy/hold/sell signals through a REST API and a responsive web UI.
 
 ---
 
