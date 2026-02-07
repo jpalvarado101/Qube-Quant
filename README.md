@@ -113,6 +113,46 @@ npm run dev
 
 ---
 
+## Deployment (Kubernetes)
+
+Kubernetes manifests are included under `k8s/`. This is optional and does **not** affect local Docker Compose.
+
+### Steps (when you're ready)
+
+1. Build and push images:
+
+```bash
+docker build -t your-registry/qube-quant-api:latest ./backend
+docker build -t your-registry/qube-quant-frontend:latest ./frontend
+docker push your-registry/qube-quant-api:latest
+docker push your-registry/qube-quant-frontend:latest
+```
+
+2. Update the placeholders:
+   - `your-domain.com` in `k8s/ingress.yaml`
+   - `VITE_API_BASE` in `k8s/frontend.yaml`
+   - `DATABASE_URL` in `k8s/secret.yaml`
+
+3. Apply manifests:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/secret.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/postgres.yaml
+kubectl apply -f k8s/api.yaml
+kubectl apply -f k8s/frontend.yaml
+kubectl apply -f k8s/ingress.yaml
+```
+
+### Notes
+
+- Use a managed Postgres for production.
+- Add cert-manager for TLS automation.
+- Apply NetworkPolicies if your cluster supports them.
+
+---
+
 ## Future Improvements
 
 - Scheduled retraining (daily/weekly)
