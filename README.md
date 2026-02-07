@@ -25,6 +25,16 @@ YouTube: https://youtu.be/TVGM4UomvNU
 
 ---
 
+## Tech Stack
+
+- Backend: FastAPI, SQLAlchemy, PostgreSQL
+- ML: scikit-learn, pandas, numpy
+- Frontend: React, TypeScript, Tailwind CSS
+- Charts: TradingView Lightweight Charts
+- Infra: Docker, Docker Compose
+
+---
+
 ## Repository Structure
 
 - `backend/` API server (FastAPI)
@@ -100,6 +110,19 @@ npm run dev
 - Models are saved in `volumes/models/` after training.
 - The "Update All" action re-ingests all default + custom tickers.
 - Validation uses Yahoo Finance; some tickers require suffixes (e.g., `.TO`).
+
+---
+
+## Future Improvements
+
+- Scheduled retraining (daily/weekly)
+- Background job queue for training
+- Model versioning and performance tracking
+- Backtesting + evaluation dashboards
+- Additional indicators / feature engineering
+- Multi-asset support (FX, crypto, commodities)
+- Real-time data feeds and alerts
+- Role-based access / user accounts
 
 ---
 
