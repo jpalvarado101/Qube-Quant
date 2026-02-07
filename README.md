@@ -1,73 +1,108 @@
-# Qube‑Quant
+# Qube-Quant
 
-**AI‑Driven Market Forecasting Framework**  
-Qube‑Quant is a modular system for training, evaluating, and deploying machine learning models that forecast financial markets using historical data.
+**AI-Driven Market Forecasting Framework**  
+Qube-Quant is a modular system for ingesting market data, training per-ticker models, and serving buy/hold/sell signals through a REST API and a responsive web UI.
 
-This project provides tools for:
-- Data ingestion and preprocessing
-- Model training and evaluation
-- Live forecasting via API
-- Interactive frontend visualization
+---
+
+## Demo Video
+
+YouTube: https://youtu.be/TVGM4UomvNU
+
+[![Demo Video](https://img.youtube.com/vi/TVGM4UomvNU/0.jpg)](https://youtu.be/TVGM4UomvNU)
 
 ---
 
 ## Features
 
-- Train and evaluate time series forecasting models
-- REST API for serving predictions
-- Frontend dashboard for visualization and interaction
-- Docker support for easy development and deployment
+- Yahoo Finance ingestion (historical OHLCV)
+- Per-ticker ML training and saved models
+- Prediction API with confidence score
+- Candlestick chart and latest price list
+- Quick ticker shortcuts + custom ticker validation
+- Dark/light mode UI
+- Dockerized backend, frontend, and database
 
 ---
-```
+
 ## Repository Structure
-- backend/ // API server
-- frontend/ // Web app (React/TS)
-- trainer/  // Training scripts and model pipelines
-- volumes/models/ // Persisted trained models
-- data/ // Market data CSVs
-- .env.example // Environment variables template
-- docker-compose.yml // Service definitions
-- README.md
-```
+
+- `backend/` API server (FastAPI)
+- `frontend/` Web app (React + Tailwind)
+- `trainer/` Training container (idle by default)
+- `volumes/models/` Saved ML model artifacts
+- `docker-compose.yml` Service definitions
+- `README.md`
 
 ---
 
-## Quick Start
+## Quick Start (Docker)
 
 ### Requirements
 
-- Docker & Docker Compose  
-- Python 3.9+ for local development
+- Docker & Docker Compose
 
----
+### Steps
 
-## Configuration
-
-1. Copy the sample environment file:
+1. Create an environment file:
 
 ```bash
 cp .env.example .env
 ```
-2. Edit .env to set your data paths, model parameters, and API keys.
 
-3. Ensure your dataset (e.g., CSV price history) is accessible to the training pipeline.
-
-
-## Development Setup
-Using Docker
-
-Build and start services:
+2. Start everything:
 
 ```bash
 docker compose up --build
 ```
-Backend API: http://localhost:8000
-Frontend UI: http://localhost:3000
+
+3. Open:
+
+- Backend API: `http://localhost:8000`
+- Frontend UI: `http://localhost:5173`
 
 To stop and remove containers:
+
 ```bash
 docker compose down
 ```
 
+To wipe the database volume:
 
+```bash
+docker compose down -v
+```
+
+---
+
+## Local Development (Optional)
+
+### Backend (Python)
+
+```bash
+python -m venv .venv
+.venv/Scripts/activate   # Windows PowerShell
+pip install -r backend/requirements.txt
+```
+
+### Frontend (Node)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## Notes
+
+- Models are saved in `volumes/models/` after training.
+- The "Update All" action re-ingests all default + custom tickers.
+- Validation uses Yahoo Finance; some tickers require suffixes (e.g., `.TO`).
+
+---
+
+## Disclaimer
+
+This project is for educational and demonstration purposes only and does not constitute financial advice. No guarantees are made about accuracy or profitability. Use at your own risk.
